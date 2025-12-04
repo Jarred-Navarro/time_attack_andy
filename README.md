@@ -17,3 +17,11 @@ Portal Texture: Drawn by Me in Microsoft Paint
 All links accurate as of 5/11/2025
 
 Thank you for playing my game! :) I hope you enjoy!
+
+** NOTE ON PROJECT HISTORY **
+The current repository does not reflect the whole development history of Time Attack Andy.
+
+This was my first ever game, and it was created for my final project in CSC 237 at Adelphi University. It was meant to demonstrate my skills and proficiency with
+using the Arcade library in Python, alongside other tools (such as Tiled) to create a game from the ground up.
+
+I was a Math Major and Computer Science Minor in my undergraduate program, and this was the second major programming assignment I had taken. As such, I had no prior experience with GitHub. Since then I've learned how to make use of git, and will track all future changes of the game through this repository.
