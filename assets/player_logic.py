@@ -9,7 +9,7 @@ from math import fabs
 
 # Setting up different player speeds.
 NORMAL_VELOCITY = 4 # Establishing important
-SPRINT_VELOCITY = 5   # velocity information
+from main import PLAYER_MOVE_ACCEL, PLAYER_FRICTION, SPRINT_VELOCITY
 CRAWL_VELOCITY = 1    # about player.
 
 def resource_path(relative_path):
@@ -58,14 +58,23 @@ def player_movement(player: arcade.Sprite, player_height: float, keys: set) -> N
         player.height = player_height
 
     # Check for left/right movement.
-    if arcade.key.A in keys or arcade.key.LEFT in keys:      # Determine direction moving.
-        player.change_x = -1 * velocity
+    if arcade.key.A in keys or arcade.key.LEFT in keys:
+        player.change_x -= PLAYER_MOVE_ACCEL
+        if player.change_x < -velocity:
+            player.change_x = -velocity
+    
     if arcade.key.D in keys or arcade.key.RIGHT in keys:
-        player.change_x = velocity
+        player.change_x += PLAYER_MOVE_ACCEL
+        if player.change_x > velocity:
+            player.change_x = velocity
 
     # Determine player movement when a key is released.
     if not (arcade.key.A in keys) and not (arcade.key.D in keys):      # Determine direction moving.
-        player.change_x *= 0.9
+        player.change_x *= PLAYER_FRICTION
+    
+    # To prevent player from infinitely moving, set a cap for when they hard stop.
+    if abs(player.change_x) < 0.01:
+        player.change_x = 0
     
     
 
