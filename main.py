@@ -13,11 +13,9 @@ PLAYER_JUMP_VELOCITY = 10
 MAX_JUMPS = 2
 BASE_HORIZONTAL_PIXELS = 640
 BASE_VERTICAL_PIXELS = 360
-# Gemini edited this. Commented out old SCALE_FACTOR as cameras handle scaling now.
-# SCALE_FACTOR = WINDOW_WIDTH // BASE_HORIZONTAL_PIXELS
 
+# For debugging purposes, log recorded height of monitor.
 print("INITIALIZING...")
-# Gemini edited this. Updated print to remove SCALE_FACTOR reference.
 print(f"WINDOW_WIDTH: {WINDOW_WIDTH}\nWINDOW_HEIGHT: {WINDOW_HEIGHT}")
 
 
@@ -39,7 +37,7 @@ class GameView(arcade.View):
         super().__init__()
 
         # Initializing full screen state.
-        self.fullscreen_mode = False
+        self.fullscreen_mode = True
         self.window.set_fullscreen(self.fullscreen_mode)
 
         # Setting initial background color.
@@ -72,7 +70,7 @@ class GameView(arcade.View):
         # Loading font that will be used for game.
         arcade.load_font(self.resource_path("assets/PublicPixel-rv0pA.ttf"))
         
-        # Gemini edited this. Initializing game and GUI cameras for Arcade 3.3.3.
+        # Initialize 2D cameras. (Note, Camera2D is exlusive to Arcade 3.3.3)
         self.game_camera = arcade.camera.Camera2D()
         self.gui_camera = arcade.camera.Camera2D()
 
@@ -90,23 +88,28 @@ class GameView(arcade.View):
         self.music_player = self.background_music.play(volume = self.music_volume, loop = True)
 
         # Initialize the GUI
-        anchorx = 25
-        anchory = 850
-        self.gui_timer = arcade.Text("Time: " + str(round(self.stage_time)), anchorx, anchory, arcade.color.CELADON_GREEN, font_size= 30, font_name = "Public Pixel", bold = True)
-        self.gui_death_count = arcade.Text("Deaths: " + str(self.deaths), anchorx, anchory - 100, arcade.color.CELADON_GREEN, font_size = 30, font_name = "Public Pixel", bold = True)
-        self.gui_remaining_coins = arcade.Text("Coins Left: " + str(self.coins_to_collect - self.coins_collected), anchorx, anchory - 200, arcade.color.CELADON_GREEN, font_size = 30, font_name = "Public Pixel", bold = True)
-        self.gui_stage_level = arcade.Text("Level " + str(self.stage_level), anchorx, anchory - 300, arcade.color.CELADON_GREEN, font_size = 30, font_name = "Public Pixel", bold = True)
-        self.gui_total_time = arcade.Text("Total Time: " + str(round(self.total_time, 2)), 9, anchory - 400, arcade.color.CELADON_GREEN, font_size = 20, font_name = "Public Pixel", bold = True)
-        self.gui_start = arcade.Text("Press 'B' to begin, 'C' for controls", 450, 50, arcade.color.WHITE, font_size = 25, font_name = "Public Pixel", bold = True)
+        anchorx = 8
+        anchory = 330
+        self.gui_timer = arcade.Text(text = "Time: " + str(round(self.stage_time)), x = anchorx, y = anchory, color = arcade.color.CELADON_GREEN, font_size= 10, font_name = "Public Pixel", bold = True)
+        self.gui_death_count = arcade.Text(text = "Deaths: " + str(self.deaths), x = anchorx, y = anchory - 25, color = arcade.color.CELADON_GREEN, font_size = 10, font_name = "Public Pixel", bold = True)
+        self.gui_remaining_coins = arcade.Text(text = "Coins Left: " + str(self.coins_to_collect - self.coins_collected), x = anchorx, y = anchory - 50, color = arcade.color.CELADON_GREEN, font_size = 8, font_name = "Public Pixel", bold = True)
+        self.gui_stage_level = arcade.Text(text = "Level " + str(self.stage_level), x = anchorx, y = anchory - 75, color = arcade.color.CELADON_GREEN, font_size = 10, font_name = "Public Pixel", bold = True)
+        self.gui_total_time_text = arcade.Text(text = "Total Time:", x = anchorx, y = anchory - 100, color = arcade.color.CELADON_GREEN, font_size = 10, font_name = "Public Pixel", bold = True)
+        self.gui_total_time_number = arcade.Text(text = str(round(self.total_time, 2)), x = 32, y = anchory - 125, color = arcade.color.CELADON_GREEN, font_size = 10, font_name = "Public Pixel", bold = False, anchor_x = "left")
 
-        self.gui_controls_1 = arcade.Text(f"Press ESC to restart a level. Adds 1 to death count.", 78, 1000, arcade.color.BEIGE, 20, font_name = "Public Pixel", bold = True)
-        self.gui_controls_2 = arcade.Text(f"Press F12 to restart whole game from title screen.", 78, 900, arcade.color.BEIGE, 20, font_name = "Public Pixel", bold = True)
-        self.gui_controls_3 = arcade.Text(f"Press F11 to toggle fullscreen.", 78, 800, arcade.color.BEIGE, 20, font_name = "Public Pixel", bold = True)
-        self.gui_controls_4 = arcade.Text(f"Press F10 to raise volume.", 78, 700, arcade.color.BEIGE, 20, font_name = "Public Pixel", bold = True)
-        self.gui_controls_5 = arcade.Text(f"Press F9 to lower volume.", 78, 600, arcade.color.BEIGE, 20, font_name = "Public Pixel", bold = True)
-        self.gui_controls_6 = arcade.Text(f"Press M to switch between Normal and Hard mode.", 78, 500, arcade.color.BEIGE, 20, font_name = "Public Pixel", bold = True)
-        self.gui_controls_7 = arcade.Text(f"Press \\ to enter DEV mode. Use the UP and DOWN arrow keys to cycle through different stages.", 78, 400, arcade.color.BEIGE, 10, font_name = "Public Pixel", bold = True)
-        self.gui_controls_8 = arcade.Text(f"Click to return to title screen.", 78, 200, arcade.color.BEIGE, 20, font_name = "Public Pixel", bold = True)
+        self.gui_start = arcade.Text(text = "Press 'B' to begin, 'C' for controls", x = 320, y = 50, color = arcade.color.WHITE, font_size = 12, font_name = "Public Pixel", bold = True, anchor_x = "center")
+        arcade.Text(text="hi", x=3, y=anchory, )
+
+        GUI_FONT_LEFT_ANCHOR = 30
+        GUI_CONTROL_FONT_SIZE = 7
+        self.gui_controls_1 = arcade.Text(f"Press ESC to restart a level. Adds 1 to death count.", GUI_FONT_LEFT_ANCHOR, 320, arcade.color.BEIGE, font_size = GUI_CONTROL_FONT_SIZE, font_name = "Public Pixel", bold = True)
+        self.gui_controls_2 = arcade.Text(f"Press F12 to restart whole game from title screen.", GUI_FONT_LEFT_ANCHOR, 290, arcade.color.BEIGE, font_size = GUI_CONTROL_FONT_SIZE, font_name = "Public Pixel", bold = True)
+        self.gui_controls_3 = arcade.Text(f"Press F11 to toggle fullscreen.", GUI_FONT_LEFT_ANCHOR, 260, arcade.color.BEIGE,font_size = GUI_CONTROL_FONT_SIZE, font_name = "Public Pixel", bold = True)
+        self.gui_controls_4 = arcade.Text(f"Press F10 to raise volume.", GUI_FONT_LEFT_ANCHOR, 230, arcade.color.BEIGE, font_size = GUI_CONTROL_FONT_SIZE, font_name = "Public Pixel", bold = True)
+        self.gui_controls_5 = arcade.Text(f"Press F9 to lower volume.", GUI_FONT_LEFT_ANCHOR, 200, arcade.color.BEIGE, font_size = GUI_CONTROL_FONT_SIZE, font_name = "Public Pixel", bold = True)
+        self.gui_controls_6 = arcade.Text(f"Press M to switch between Normal and Hard mode.", GUI_FONT_LEFT_ANCHOR, 170, arcade.color.BEIGE, font_size = GUI_CONTROL_FONT_SIZE, font_name = "Public Pixel", bold = True)
+        self.gui_controls_7 = arcade.Text(f"Press \\ to enter DEV mode. Use the UP and DOWN arrow keys to cycle through different stages.", GUI_FONT_LEFT_ANCHOR, 140, arcade.color.BEIGE, font_size = GUI_CONTROL_FONT_SIZE, font_name = "Public Pixel", bold = True, multiline = "True", width = 500)
+        self.gui_controls_8 = arcade.Text(f"Click to return to title screen.", GUI_FONT_LEFT_ANCHOR, 110, arcade.color.BEIGE, font_size = GUI_CONTROL_FONT_SIZE, font_name = "Public Pixel", bold = True)
 
         # Initializing the keys counter.
         self.keys = set()
@@ -115,12 +118,12 @@ class GameView(arcade.View):
     def reset(self):
         """Resets the game to the initial state."""
 
-        # Gemini edited this. Configure Camera Viewport to stretch 360p to full window size.
+        # Position the game camera and adjust its scope to match that of window.
         sw, sh = BASE_HORIZONTAL_PIXELS, BASE_VERTICAL_PIXELS
         self.game_camera.projection = arcade.LRBT(0, sw, 0, sh)
         self.game_camera.viewport = arcade.LRBT(0, self.window.width, 0, self.window.height)
         
-        # Gemini edited this. Anchor cameras to (0, 0) to prevent top-right quadrant zoom.
+        # Position the gui camera and adjust its scope to match that of window.
         self.game_camera.position = (0, 0)
         self.gui_camera.projection = arcade.LRBT(0, sw, 0, sh)
         self.gui_camera.viewport = arcade.LRBT(0, self.window.width, 0, self.window.height)
@@ -128,10 +131,8 @@ class GameView(arcade.View):
 
         # Initializing the map.
         MAP_FILE = self.resource_path(os.path.join("assets/stage_files", f"taa_stage_{self.stage_level}.tmx")) # concatentate string with the level number. have naming convention where file ends with the level number.
-        # Gemini edited this. Changed scaling to 1.0 since camera viewport handles zoom.
         self.map = arcade.TileMap(MAP_FILE, scaling = 1)
-        # self.map = arcade.TileMap(MAP_FILE, scaling = SCALE_FACTOR)
-        #self.map = arcade.TileMap(MAP_FILE, scaling = 2.5)
+
         self.stage_time = self.stage_time_list[self.stage_level + self.difficulty]
 
         # Initializing the relevant layers for easy access. Note: These are all sprite lists.
@@ -151,19 +152,15 @@ class GameView(arcade.View):
 
         # Moving the portal offscreen so player can't interact with it. (will return to screen when player collects all coins in a stage.)
         for section in self.portal:
-            # Gemini edited this. Use virtual dimensions for portal offset.
+            # Use virtual dimensions for portal offset. Stores it off screen until user has collected all coins.
             section.center_x -= BASE_HORIZONTAL_PIXELS
-            section.center_y -= BASE_VERTICAL_PIXELS        
-            # section.center_x -= self.width
-            # section.center_y -= self.height        
+            section.center_y -= BASE_VERTICAL_PIXELS           
         
         self.portal_hidden = True
 
         # Initializing the player and some key attributes.
         self.players = arcade.SpriteList()
-        # Gemini edited this. Changed scaling to 1.0.
-        self.player = arcade.Sprite(self.resource_path("assets/player_textures/player.png"), scale = 1.0) # giving player blob texture.
-        # self.player = arcade.Sprite(self.resource_path("assets/player_textures/player.png"), scale = SCALE_FACTOR) # giving player blob texture.
+        self.player = arcade.Sprite(self.resource_path("assets/player_textures/player.png"), scale = 1) # giving player blob texture.
         
         start_x = self.starting_position[0].center_x #+ 18   # Setting up starting position.
         start_y = self.starting_position[0].center_y        # Determined by position of starting tile in map.
@@ -189,7 +186,7 @@ class GameView(arcade.View):
         # Clear the scene every frame.
         self.clear()
 
-        # Gemini edited this. Activate game camera before drawing world objects.
+        # Activate game camera before drawing world objects.
         self.game_camera.use()
 
         # Draw the map every frame.
@@ -208,7 +205,8 @@ class GameView(arcade.View):
             self.gui_death_count.draw()
             self.gui_remaining_coins.draw()
             self.gui_stage_level.draw()
-            self.gui_total_time.draw()
+            self.gui_total_time_text.draw()
+            self.gui_total_time_number.draw()
         
         elif not self.start and self.stage_level == 0:
             self.gui_start.draw()
@@ -249,7 +247,7 @@ class GameView(arcade.View):
         self.gui_death_count.text = "Deaths: " + str(self.deaths)
         self.gui_remaining_coins.text = "Coins Left: " + str(self.coins_to_collect - self.coins_collected)
         self.gui_stage_level.text = "Level " + str(self.stage_level)
-        self.gui_total_time.text = "Total Time: " + str(round(self.total_time, 2))
+        self.gui_total_time_number.text = str(round(self.total_time, 2))
 
         # Check stage timer. Reset level if time runs out.
         if self.stage_time < 0:
@@ -325,12 +323,12 @@ class GameView(arcade.View):
         if self.stage_level == 21 and not self.game_over:
             self.game_over = True
             if not self.dev_mode:
-                self.final_time = arcade.Text(f"Your final time was {round(self.total_time, 2)}", 678, 400, arcade.color.BEIGE, 30, font_name = "Public Pixel", bold = True)
-                self.final_deaths = arcade.Text(f"Your final deaths was {self.deaths}", 678, 300, arcade.color.BEIGE, 30, font_name = "Public Pixel", bold = True)
-                self.instructions = arcade.Text("Thank you for playing my game! Click to play again!", 678, 200, arcade.color.BEIGE, 30, font_name = "Public Pixel", width = 1200, bold = True, multiline = True)
+                self.final_time = arcade.Text(f"Your final time was {round(self.total_time, 2)}", 400, 125, arcade.color.BEIGE, 10, font_name = "Public Pixel", bold = True, anchor_x = "center")
+                self.final_deaths = arcade.Text(f"Your final deaths was {self.deaths}", 400, 75, arcade.color.BEIGE, 10, font_name = "Public Pixel", bold = True,  anchor_x = "center")
+                self.instructions = arcade.Text("Thank you for playing my game! Click to play again!", 400, 25, arcade.color.BEIGE, 10, font_name = "Public Pixel", width = 500, bold = True, anchor_x = "center", multiline = True)
             else:
-                self.sorry = arcade.Text(f"Sorry, you are in DEV mode and can not get a final time or death count. :(", 678, 400, arcade.color.BEIGE, 30, font_name = "Public Pixel", width = 1100, bold = True, multiline = True)
-                self.instructions = arcade.Text("Thank you for playing my game! Click to play again!", 678, 200, arcade.color.BEIGE, 30, font_name = "Public Pixel", width = 1200, bold = True, multiline = True)
+                self.sorry = arcade.Text(f"Sorry, you are in DEV mode and can not get a final time or death count. :(", 400, 125, arcade.color.BEIGE, 10, font_name = "Public Pixel", width = 448, bold = True, anchor_x = "center", multiline = True)
+                self.instructions = arcade.Text("Thank you for playing my game! Click to play again!", 400, 75, arcade.color.BEIGE, 10, font_name = "Public Pixel", width = 448, bold = True, anchor_x = "center", multiline = True)
             
 
         # Updating necesary sprite lists/objects.
@@ -355,7 +353,8 @@ class GameView(arcade.View):
         if key == arcade.key.F11:
             self.fullscreen_mode = not self.fullscreen_mode
             self.window.set_fullscreen(self.fullscreen_mode)
-            # Gemini edited this. Re-call reset to update camera viewport for new window size.
+
+            # Re-call reset to update camera viewport for new window size.
             self.reset()
 
         # Player jumping mechanism.
@@ -452,9 +451,8 @@ class GameView(arcade.View):
 
 def main():
     """ Contains the logic for launching and running the game. """
-    # Gemini edited this. Use Detected Window Width/Height to span entire monitor.
-    window = arcade.Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE)
-    # window = arcade.Window(BASE_HORIZONTAL_PIXELS, BASE_VERTICAL_PIXELS, WINDOW_TITLE)
+    # Initialize the window (for non-fullscreen)
+    window = arcade.Window(BASE_HORIZONTAL_PIXELS, BASE_VERTICAL_PIXELS, WINDOW_TITLE)
 
     # Associate the main GameView with the Window
     game = GameView()
