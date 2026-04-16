@@ -78,9 +78,9 @@ def coin_run_away(player: arcade.Sprite, coins: arcade.SpriteList) -> None:
     '''
     Have the coin move away from the player when they get too close.
     '''
-    speed = 10 
+    speed = 5 
     for coin in coins:
-        if arcade.math.get_distance(player.center_x, player.center_y, coin.center_x, coin.center_y) < 100:
+        if arcade.math.get_distance(player.center_x, player.center_y, coin.center_x, coin.center_y) < 45:
             x = -1 * speed * sin(arcade.math.get_angle_radians(coin.center_x, coin.center_y, player.center_x, player.center_y))
             y = -1 * speed * cos(arcade.math.get_angle_radians(coin.center_x, coin.center_y, player.center_x, player.center_y))
             coin.velocity = (x, y)

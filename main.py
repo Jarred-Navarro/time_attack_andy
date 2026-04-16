@@ -330,7 +330,7 @@ class GameView(arcade.View):
             envl.coin_run_away(self.player, self.coins)
             if not self.portal_hidden:
                 for portal in self.portal:
-                    portal.forward(5)
+                    portal.forward(2)
         
         # Check if player completed game.
         if self.stage_level == 21 and not self.game_over:
