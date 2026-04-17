@@ -118,42 +118,30 @@ def move_floating_enemies(player: arcade.Sprite, enemies: arcade.SpriteList, spe
             else:
                 enemy.velocity = (0, 0)
 
+# Define a mapping of colors and special behaviors.
+# Is a dictionary where key is stage level and value is another dictionary with properties.
+STAGE_CONFIG = {
+    4:  {"color": arcade.color.DARK_OLIVE_GREEN, "speed": 5.5},
+    8:  {"color": arcade.color.GRAY},
+    10: {"speed": 1.5},
+    11: {"color": arcade.color.SKY_BLUE},
+    14: {"color": arcade.color.DESERT_SAND, "speed": 4},
+    16: {"color": arcade.color.BABY_PINK},
+    18: {"color": arcade.color.YELLOW_ORANGE},
+    20: {"color": arcade.color.BLUEBERRY}
+}
 
-def unique_stage_logic(stage_level: int, player: arcade.Sprite, entities: arcade.SpriteList,  animation_clock: float, background_color: arcade.color) -> arcade.color:
-    '''
-    For certain levels, different elements will have custom logic. This will be handled by this function.
-    '''
-
-    if stage_level == 4:
-            move_floating_enemies(player, entities, 5.5)
-            return arcade.color.DARK_OLIVE_GREEN
-
-    elif stage_level == 8:
-            return arcade.color.GRAY
-
-    elif stage_level == 10:
-            move_floating_enemies(player, entities, 1.5)
-
-    elif stage_level == 11:
-            return arcade.color.SKY_BLUE
+def unique_stage_logic(stage_level: int, player: arcade.Sprite, entities: arcade.SpriteList, animation_clock: float, background_color: arcade.color) -> arcade.color:
+    config = STAGE_CONFIG.get(stage_level, {})
     
-    elif stage_level == 14:
-            move_floating_enemies(player, entities, 4)
-            return arcade.color.DESERT_SAND
-
-    elif stage_level == 15:
-         add_coin_textures(entities)
-         animate_coin(animation_clock, entities)
+    # Handle Enemy Movement
+    if "speed" in config:
+        move_floating_enemies(player, entities, config["speed"])
+    
+    # Handle Animations for Level 15
+    if stage_level == 15:
+        add_coin_textures(entities)
+        animate_coin(animation_clock, entities)
         
-    elif stage_level == 16:
-         return arcade.color.BABY_PINK
-    
-    elif stage_level == 18:
-         return arcade.color.YELLOW_ORANGE
-    
-    elif stage_level == 20:
-         return arcade.color.BLUEBERRY
-    
-    return background_color # Keep current background color.
-
-
+    # Return new color if defined, otherwise keep existing
+    return config.get("color", background_color)
