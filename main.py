@@ -54,6 +54,9 @@ class GameView(arcade.View):
         """ Called when the View is created. """
         super().__init__()
 
+        # Allows us to be able to display the framerate.
+        arcade.enable_timings()
+
         # Initializing full screen state.
         self.fullscreen_mode = True
         self.window.set_fullscreen(self.fullscreen_mode)
@@ -252,6 +255,10 @@ class GameView(arcade.View):
             self.gui_controls_6.draw()
             self.gui_controls_7.draw()
             self.gui_controls_8.draw()
+        
+        # Draw the framerate.
+        fps = arcade.get_fps()
+        arcade.draw_text(f"FPS: {fps:.0f}", 10, 10, arcade.color.WHITE, 14)
             
 
     def on_update(self, delta_time: float):
