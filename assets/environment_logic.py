@@ -6,17 +6,7 @@ import os
 import sys
 from random import randint
 from math import sin, cos, fabs
-import assets.player_logic as pl
-
-
-
-def resource_path(relative_path):
-        """ Get absolute path to resource, works for dev and PyInstaller """
-        try:
-            base_path = sys._MEIPASS  # This is where PyInstaller unpacks files
-        except AttributeError:
-            base_path = os.path.abspath(".")  # Normal dev path
-        return os.path.join(base_path, relative_path)
+from assets.constants import resource_path
 
 # Loading sounds that will be used for environment interactions.
 coin_collect_sound = arcade.load_sound(resource_path("assets/sounds/coin1.wav"))

@@ -3,6 +3,7 @@ import os
 import sys
 import assets.environment_logic as envl
 import assets.player_logic as pl
+import assets.constants as const
 
 
 ### Constants ###
@@ -13,22 +14,22 @@ BASE_HORIZONTAL_PIXELS = 640
 BASE_VERTICAL_PIXELS = 360
 
 # Environment Constants
-GRAVITY = 0.5
+GRAVITY = const.GRAVITY
 
 # Player Movement Constants
-PLAYER_JUMP_VELOCITY = 5.5
-PLAYER_MOVE_ACCEL = 0.7
-PLAYER_FRICTION = 0.6
+PLAYER_JUMP_VELOCITY = const.PLAYER_JUMP_VELOCITY
+PLAYER_MOVE_ACCEL = const.PLAYER_MOVE_ACCEL
+PLAYER_FRICTION = const.PLAYER_FRICTION
 
-CRAWL_VELOCITY = 0.5
-NORMAL_VELOCITY = 1.5
-SPRINT_VELOCITY = 2.5
+CRAWL_VELOCITY = const.CRAWL_VELOCITY
+NORMAL_VELOCITY = const.NORMAL_VELOCITY
+SPRINT_VELOCITY = const.SPRINT_VELOCITY
 
-MAX_JUMPS = 2
+MAX_JUMPS = const.MAX_JUMPS
 
 # Texture Constants
-COIN_TEXTURE = arcade.load_spritesheet(envl.resource_path("assets/coin_textures/coin_tilesheet.png"), sprite_width = 18, sprite_height = 18, columns = 4, count = 4)
-EVIL_COIN_TEXTURE = arcade.load_spritesheet(envl.resource_path("assets/coin_textures/evil_coin_tilesheet.png"), sprite_width = 18, sprite_height = 18, columns = 4, count = 4)
+COIN_TEXTURE = arcade.load_spritesheet(const.resource_path("assets/coin_textures/coin_sheet.png")).get_texture_grid(size = (18, 18), columns = 4, count = 4)
+EVIL_COIN_TEXTURE = arcade.load_spritesheet(const.resource_path("assets/coin_textures/evil_coin_sheet.png")).get_texture_grid(size = (18, 18), columns = 4, count = 4)
 ### END CONSTANTS ###
 
 # For debugging purposes, log recorded height of monitor.

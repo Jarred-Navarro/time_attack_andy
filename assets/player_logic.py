@@ -8,7 +8,7 @@ import os
 from math import fabs
 
 # Import player movement information from main.
-from main import PLAYER_MOVE_ACCEL, PLAYER_FRICTION, CRAWL_VELOCITY, NORMAL_VELOCITY, SPRINT_VELOCITY
+from assets.constants import PLAYER_MOVE_ACCEL, PLAYER_FRICTION, CRAWL_VELOCITY, NORMAL_VELOCITY, SPRINT_VELOCITY
 
 
 def resource_path(relative_path):
