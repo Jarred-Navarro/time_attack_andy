@@ -56,6 +56,7 @@ class GameView(arcade.View):
 
         # Allows us to be able to display the framerate.
         arcade.enable_timings()
+        self.display_fps = False
 
         # Initializing full screen state.
         self.fullscreen_mode = True
@@ -257,8 +258,9 @@ class GameView(arcade.View):
             self.gui_controls_8.draw()
         
         # Draw the framerate.
-        fps = arcade.get_fps()
-        arcade.draw_text(f"FPS: {fps:.0f}", 10, 10, arcade.color.WHITE, 14)
+        if self.display_fps:
+            fps = arcade.get_fps()
+            arcade.draw_text(f"FPS: {fps:.0f}", 10, 10, arcade.color.WHITE, 14)
             
 
     def on_update(self, delta_time: float):
@@ -434,6 +436,9 @@ class GameView(arcade.View):
         if self.dev_mode and key == arcade.key.DOWN:
             self.stage_level = (self.stage_level % 22) - 1
             self.reset()
+
+        if key == arcade.key.TAB:
+            self.display_fps = False if self.display_fps else True
 
         # Adjust the music volume.
         if key == arcade.key.F10:
