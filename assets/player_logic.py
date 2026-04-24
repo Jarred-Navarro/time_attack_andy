@@ -44,7 +44,7 @@ def player_movement(player: arcade.Sprite, player_height: float, keys: set) -> N
     PLAYER_HEIGHT_CRAWL = player_height * 1.2
     
     # Check for sprinting or crouching.
-    if arcade.key.LSHIFT in keys: # Establish sprinting versus walking velocity.
+    if arcade.key.LSHIFT in keys or arcade.key.RSHIFT in keys: # Establish sprinting versus walking velocity.
         velocity = SPRINT_VELOCITY
         player.height = PLAYER_HEIGHT_SPRINT
 
