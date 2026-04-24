@@ -59,16 +59,16 @@ def player_movement(player: arcade.Sprite, player_height: float, keys: set) -> N
     # Check for left/right movement.
     if arcade.key.A in keys or arcade.key.LEFT in keys:
         player.change_x -= PLAYER_MOVE_ACCEL
-        if player.change_x < -velocity:
+        if player.change_x < -velocity: # prevents player from accelerating beyond max velocity
             player.change_x = -velocity
     
     if arcade.key.D in keys or arcade.key.RIGHT in keys:
         player.change_x += PLAYER_MOVE_ACCEL
-        if player.change_x > velocity:
+        if player.change_x > velocity: # prevents player from accelerating beyond max velocity
             player.change_x = velocity
 
     # Determine player movement when a key is released.
-    if not (arcade.key.A in keys) and not (arcade.key.D in keys):      # Determine direction moving.
+    if not (arcade.key.A in keys or arcade.key.LEFT in keys) and not (arcade.key.D in keys or arcade.key.RIGHT in keys):      # Determine direction moving.
         player.change_x *= PLAYER_FRICTION
     
     # To prevent player from infinitely moving, set a cap for when they hard stop.
