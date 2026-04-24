@@ -62,9 +62,12 @@ class GameView(arcade.View):
         self.fullscreen_mode = True
         self.window.set_fullscreen(self.fullscreen_mode)
 
+        # Initialize game difficulty.
+        self.difficulty = -1 # -1 represents normal difficulty. 20 represents hard difficulty.
+        
         # Setting initial background color.
         # Setting background color
-        self.background_color = arcade.color.DARK_BROWN
+        self.background_color = arcade.color.DARK_BROWN if self.difficulty == -1 else arcade.color.LAVA
 
         # Initializing death counter.
         self.deaths = 0
@@ -86,8 +89,6 @@ class GameView(arcade.View):
             for line in file:
                 amount_of_stage_time = line.split()
                 self.stage_time_list.append(int(amount_of_stage_time[1]))
-        
-        self.difficulty = -1 # -1 represents normal difficulty. 20 represents hard difficulty.
 
         # Loading font that will be used for game.
         arcade.load_font(self.resource_path("assets/PublicPixel-rv0pA.ttf"))
@@ -403,7 +404,7 @@ class GameView(arcade.View):
             self.total_time = 0
             self.dev_mode = False
             self.start = False
-            self.background_color = arcade.color.DARK_BROWN
+            self.background_color = arcade.color.DARK_BROWN if self.difficulty == -1 else arcade.color.LAVA
         
         # Start game.
         if self.stage_level == 0 and key == arcade.key.B:
@@ -420,9 +421,11 @@ class GameView(arcade.View):
         if self.stage_level == 0 and key == arcade.key.M and not self.dev_mode:
             if self.difficulty == -1:
                 self.difficulty = 20
+                self.background_color = arcade.color.LAVA
                 print("Hard Mode Enabled")
             else:
                 self.difficulty = -1
+                self.background_color = arcade.color.DARK_BROWN
                 print("Normal Mode Enabled")
         
         # For dev purposes.
@@ -481,7 +484,7 @@ class GameView(arcade.View):
             self.total_time = 0
             self.dev_mode = False
             self.start = False
-            self.background_color = arcade.color.DARK_BROWN
+            self.background_color = arcade.color.DARK_BROWN 
 
 def main():
     """ Contains the logic for launching and running the game. """

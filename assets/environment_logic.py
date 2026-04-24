@@ -99,6 +99,7 @@ def move_floating_enemies(player: arcade.Sprite, enemies: arcade.SpriteList, spe
 # Define a mapping of colors and special behaviors.
 # Is a dictionary where key is stage level and value is another dictionary with properties.
 STAGE_CONFIG = {
+    1:  {"color": arcade.color.DARK_BROWN},
     4:  {"color": arcade.color.DARK_OLIVE_GREEN, "speed": 5.5},
     8:  {"color": arcade.color.GRAY},
     10: {"speed": 1.5},
